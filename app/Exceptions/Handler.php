@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -35,7 +36,19 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+
+            // Lager en errorLog array. Første plass har fil, linje og kode som feilet.
+            // Etter har vi stack trace som vi tar kun første 5 rader av.
+            $errorLog = collect([
+                [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'code' => $e->getCode(),
+                ]
+            ])->concat(collect($e->getTrace())->take(5))->toArray();
+
+            // Logg til Slack
+            Log::channel('slack')->error("En exception ble kastet! \n `" . $e->getMessage() .'`', $errorLog);
         });
     }
 }

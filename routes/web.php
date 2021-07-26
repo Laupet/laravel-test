@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,5 +21,12 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/error', function () {
+    $apple =$data['users'];
+
+    // throw new \Exception('The error message');
+});
+
 
 require __DIR__.'/auth.php';

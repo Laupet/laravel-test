@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/users', function (Request $request) {
+    return User::get();
+});
+
 // Test http client
 Route::get('/rest', function (Request $request) {
     $response = Http::post('https://nameday.abalin.net/today');

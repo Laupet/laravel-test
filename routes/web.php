@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +23,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// Test Slack error reporting
 Route::get('/error', function () {
-    $apple =$data['users'];
+    $data = [];
+    $error =$data['users']; // Trigger exception
+});
 
-    // throw new \Exception('The error message');
+// Test http client
+Route::get('/rest', function () {
+    $response = Http::post('https://nameday.abalin.net/today');
+    return json_decode($response->body());
 });
 
 
